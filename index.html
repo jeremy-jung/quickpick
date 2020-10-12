@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+
+    </head>
+
+    <body>
+        <div>
+            The quick pick numbers are:
+            <span id = "quickpicknumbers">
+
+            </span>
+        </div>
+        <div>
+            The lucky ball number is:
+            <span id="luckyballnumber">
+            
+            </span>
+        </div>
+        <br/>
+        <div>
+            The winning numbers are:
+            <span id="winningnumbers">
+        
+            </span>
+        </div>
+        <div>
+            The lucky ball number is:
+            <span id="luckyballnumber2">
+        
+            </span>
+        </div>
+        <br/>
+        <div>
+            Your prize:
+            <span id = "response">
+                
+            </span>
+        </div>
+    </body>
+    <script>
+        var quickpickElement;
+        var luckyballElement;
+        var winningElement;
+        var luckyball2Element;
+        var responseElement;
+        var results = [false, false, false, false, false, false];
+        const matching = ["28", "30", "31", "42", "43"];
+        const matchball = "13";
+        const amount = {
+            0: "$4",
+            1: "$6",
+            2: "$3",
+            3: "$25",
+            4: "$20",
+            5: "$150",
+            6: "$200",
+            7: "$5000",
+            8: "$25,000 a YEAR for LIFE",
+            9: "$7,000 a WEEK for LIFE"
+        }
+        
+        var luckyballresponse;
+        var quickpickArray = [];
+
+        window.onload = function () {
+            quickpickElement = document.getElementById("quickpicknumbers");
+            winningElement = document.getElementById("winningnumbers");
+            luckyballElement = document.getElementById("luckyballnumber");
+            luckyball2Element = document.getElementById("luckyballnumber2");
+            responseElement = document.getElementById("response");
+
+            luckyballElement.innerHTML = matchball;
+
+            for ( var number in matching ) {
+                quickpickElement.innerHTML = quickpickElement.innerHTML + " " + matching[number] + " ";
+            }
+
+            promptUser();
+        }
+
+        function promptUser() {
+            var quickpickresponse = prompt("Enter winning numbers separated by space");
+            luckyballresponse = prompt("Enter lucky ball number");
+            luckyball2Element.innerHTML = luckyballresponse;
+
+            let re = / /g;
+
+            var splitResponse = quickpickresponse.split(re);
+            console.log(splitResponse);
+            for ( var number in splitResponse ) {
+                quickpickArray.push(splitResponse[number]);
+                winningElement.innerHTML = winningElement.innerHTML + " " + splitResponse[number] + " ";
+            }
+
+            matchResponse(displayResults);
+        }
+
+        function matchResponse(callback) {
+            for ( var i = 0 ; i < 5; i++ ) {
+                if ( quickpickArray[i] == matching[i] ) {
+                    results[i] = true;
+                }
+            }
+
+            if ( luckyballresponse == matchball ) {
+                results[5] = true;
+            }
+            
+            callback();
+        }
+
+        function displayResults() {
+            var count = 0;
+            for ( var i = 0; i < 5; i++ ) {
+                if ( results[i] ) {
+                    count = count + 1;
+                } 
+            }
+            // matching ball
+            if (results[5]) {
+                if (count == 0) {
+                    responseElement.innerHTML = amount[0];
+                }
+                else if (count == 1) {
+                    responseElement.innerHTML = amount[1];
+                }
+                else if (count == 2) {
+                    responseElement.innerHTML = amount[3];
+                }
+                else if (count == 3) {
+                    responseElement.innerHTML = amount[5];
+                }
+                else if (count == 4) {
+                    responseElement.innerHTML = amount[7];
+                }
+                else if (count == 5) {
+                    responseElement.innerHTML = amount[9];
+                } else {
+                    responseElement.innerHTML = "Nothing";
+                }
+            } else {
+                if (count == 2) {
+                    responseElement.innerHTML = amount[2];
+                }
+                else if (count == 3) {
+                    responseElement.innerHTML = amount[4];
+                }
+                else if (count == 4) {
+                    responseElement.innerHTML = amount[6];
+                }
+                else if (count == 5) {
+                    responseElement.innerHTML = amount[8];
+                }
+                else {
+                    responseElement.innerHTML = "Nothing";
+                }
+            }
+
+        }
+
+    </script>
+
+</html>
